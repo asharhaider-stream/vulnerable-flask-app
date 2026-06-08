@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Officer Report | Punjab Police RMS</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4f8; margin: 0; }
+        header { background: #1a3a5c; color: white; padding: 20px 40px; }
+        header h1 { margin: 0; font-size: 24px; }
+        header p { margin: 4px 0 0; font-size: 13px; color: #a0b8d0; }
+        nav { background: #15304d; padding: 10px 40px; }
+        nav a { color: #a0b8d0; text-decoration: none; margin-right: 20px; font-size: 14px; }
+        .container { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2 { color: #1a3a5c; }
+        .report-box { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 24px; margin-top: 20px; }
+        .report-box p { margin: 8px 0; font-size: 15px; }
+        .label { color: #666; font-size: 13px; }
+        .back { display: inline-block; margin-top: 20px; color: #1a3a5c; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏛️ Punjab Police — Records Management System</h1>
+        <p>Authorized Personnel Only | Internal Use Only</p>
+    </header>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/report?name=Officer">Generate Report</a>
+        <a href="/download?file=case001.txt">Download Case File</a>
+    </nav>
+    <div class="container">
+        <h2>Generated Report</h2>
+        <div class="report-box">
+            <p class="label">Reporting Officer:</p>
+            <p>{{ name | safe }}</p>
+            <p class="label">Report Date:</p>
+            <p>{{ now if now else "06/05/2026" }}</p>
+            <p class="label">Report Status:</p>
+            <p>Submitted Successfully</p>
+        </div>
+        <a class="back" href="/">← Back to Search</a>
+    </div>
+</body>
+</html>
