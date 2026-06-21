@@ -1,43 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Officer Report | Punjab Police RMS</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f0f4f8; margin: 0; }
-        header { background: #1a3a5c; color: white; padding: 20px 40px; }
-        header h1 { margin: 0; font-size: 24px; }
-        header p { margin: 4px 0 0; font-size: 13px; color: #a0b8d0; }
-        nav { background: #15304d; padding: 10px 40px; }
-        nav a { color: #a0b8d0; text-decoration: none; margin-right: 20px; font-size: 14px; }
-        .container { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        h2 { color: #1a3a5c; }
-        .report-box { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 24px; margin-top: 20px; }
-        .report-box p { margin: 8px 0; font-size: 15px; }
-        .label { color: #666; font-size: 13px; }
-        .back { display: inline-block; margin-top: 20px; color: #1a3a5c; text-decoration: none; font-size: 14px; }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>🏛️ Punjab Police — Records Management System</h1>
-        <p>Authorized Personnel Only | Internal Use Only</p>
-    </header>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/report?name=Officer">Generate Report</a>
-        <a href="/download?file=case001.txt">Download Case File</a>
-    </nav>
-    <div class="container">
-        <h2>Generated Report</h2>
-        <div class="report-box">
-            <p class="label">Reporting Officer:</p>
-            <p>{{ name | safe }}</p>
-            <p class="label">Report Date:</p>
-            <p>{{ now if now else "06/05/2026" }}</p>
-            <p class="label">Report Status:</p>
-            <p>Submitted Successfully</p>
-        </div>
-        <a class="back" href="/">← Back to Search</a>
+{% extends "base.html" %}
+
+{% block title %}Generate Report | Punjab Police RMS{% endblock %}
+
+{% block content %}
+<h2>Generate Criminal Report</h2>
+<p>Enter a suspect ID to generate a detailed criminal profile report.</p>
+
+<form method="GET" action="/report" class="search-box">
+    <input type="number" name="id" placeholder="Enter Suspect ID" min="1">
+    <button type="submit">Generate Report</button>
+</form>
+
+{% if report %}
+    <div class="criminal-card">
+        <h3>Criminal Report #{{ report.id }}</h3>
+        <p><strong>Name:</strong> {{ report.name }}</p>
+        <p><strong>CNIC:</strong> {{ report.cnic }}</p>
+        <p><strong>Crime:</strong> {{ report.crime }}</p>
+        <p><strong>Status:</strong> <span class="status-{{ report.status|lower }}">{{ report.status }}</span></p>
+        <p><strong>Report Generated:</strong> {{ report.generated_at }}</p>
+        <p><strong>Case Summary:</strong> {{ report.summary }}</p>
     </div>
-</body>
-</html>
+    <div class="notice">
+        This report is for official use only. Unauthorized distribution is prohibited.
+    </div>
+{% endif %}
+
+<a class="back" href="/">← Back to Home</a>
+{% endblock %}

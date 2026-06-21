@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Punjab Police RMS{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f4f8; min-height: 100vh; }
+        
+        header { background: #1a3a5c; color: white; padding: 20px 40px; }
+        header h1 { margin: 0; font-size: 24px; }
+        header p { margin: 4px 0 0; font-size: 13px; color: #a0b8d0; }
+        
+        nav { background: #15304d; padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+        nav a { color: #a0b8d0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+        nav a:hover { color: white; }
+        
+        .container { max-width: 900px; margin: 30px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
+        h2 { color: #1a3a5c; margin-bottom: 16px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th { background: #1a3a5c; color: white; padding: 10px 12px; text-align: left; }
+        td { padding: 10px 12px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f5f8ff; }
+        
+        .status-wanted { color: #dc3545; font-weight: bold; }
+        .status-arrested { color: #fd7e14; font-weight: bold; }
+        .status-released { color: #28a745; font-weight: bold; }
+        
+        .search-box { display: flex; gap: 10px; margin: 16px 0; flex-wrap: wrap; }
+        .search-box input { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; }
+        .search-box button { background: #1a3a5c; color: white; border: none; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-size: 15px; }
+        .search-box button:hover { background: #0f2a44; }
+        
+        .btn { display: inline-block; background: #1a3a5c; color: white; padding: 8px 18px; border-radius: 4px; text-decoration: none; font-size: 14px; border: none; cursor: pointer; }
+        .btn:hover { background: #0f2a44; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #b02a37; }
+        
+        .notice { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 16px; margin: 16px 0; font-size: 13px; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 12px 16px; margin: 16px 0; font-size: 13px; color: #155724; }
+        .error { background: #f8d7da; border-left: 4px solid #dc3545; padding: 12px 16px; margin: 16px 0; font-size: 13px; color: #721c24; }
+        
+        .back { display: inline-block; margin-top: 16px; color: #1a3a5c; text-decoration: none; font-size: 14px; }
+        .back:hover { text-decoration: underline; }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        
+        .criminal-card { background: #f8f9fa; padding: 20px; border-radius: 6px; margin: 16px 0; }
+        .criminal-card h3 { color: #1a3a5c; margin-bottom: 8px; }
+        .criminal-card p { margin: 4px 0; }
+        
+        .report-output { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 4px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre-wrap; }
+        
+        @media (max-width: 600px) {
+            header { padding: 16px; }
+            header h1 { font-size: 18px; }
+            nav { padding: 10px 16px; gap: 6px 12px; }
+            nav a { font-size: 13px; }
+            .container { padding: 16px; margin: 16px; }
+            .search-box { flex-direction: column; }
+            .search-box input { min-width: auto; }
+            table { font-size: 13px; }
+            th, td { padding: 6px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏛️ Punjab Police — Records Management System</h1>
+        <p>Authorized Personnel Only | Internal Use Only</p>
+    </header>
+    <nav>
+    <a href="/">Home</a>
+    <a href="/add-suspect">Add Suspect</a>
+    <a href="/report">Generate Report</a>
+    <a href="/download">Download Case</a>
+</nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

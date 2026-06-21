@@ -1,0 +1,24 @@
+
+========================================
+PUNJAB POLICE - CASE FILE
+========================================
+
+Case ID: 3
+Suspect Name: Mirza Haris
+CNIC: 35202-1122334-3
+Crime: Drug trafficking
+Status: Arrested
+Filed: 2026-06-19 18:32
+Officer: Inspector Ahmad Khan
+
+----------------------------------------
+CASE SUMMARY
+----------------------------------------
+Mirza Haris is accused of Drug trafficking. 
+Current status: Arrested.
+Evidence collected and under review.
+
+----------------------------------------
+THIS IS A CONFIDENTIAL DOCUMENT
+----------------------------------------
+        

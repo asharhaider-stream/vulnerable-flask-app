@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Download Case File | Punjab Police RMS{% endblock %}
+
+{% block content %}
+<h2>Download Case File</h2>
+<p>Enter the Suspect ID to download their official case file.</p>
+
+<form method="GET" action="/download" class="search-box">
+    <input type="number" name="id" placeholder="Enter Suspect ID" min="1" required>
+    <button type="submit" class="btn">Generate & Download</button>
+</form>
+
+{% if case_file %}
+    <div class="criminal-card">
+        <h3>Case File #{{ case_file.id }}</h3>
+        <p><strong>Suspect Name:</strong> {{ case_file.name }}</p>
+        <p><strong>CNIC:</strong> {{ case_file.cnic }}</p>
+        <p><strong>Crime:</strong> {{ case_file.crime }}</p>
+        <p><strong>Status:</strong> <span class="status-{{ case_file.status|lower }}">{{ case_file.status }}</span></p>
+        <p><strong>Case Filed:</strong> {{ case_file.filed_at }}</p>
+        <p><strong>Investigating Officer:</strong> {{ case_file.officer }}</p>
+        <p><strong>Case Status:</strong> {{ case_file.case_status }}</p>
+        <p><strong>Case Summary:</strong> {{ case_file.summary }}</p>
+    </div>
+    
+    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/download-file/{{ case_file.id }}" class="btn">⬇️ Download Text Report</a>
+        <a href="/download-file/{{ case_file.id }}?format=json" class="btn">⬇️ Download JSON</a>
+    </div>
+    
+    <div class="notice">
+        This case file is confidential and for authorized personnel only.
+    </div>
+{% elif requested %}
+    <div class="error">No suspect found with ID: {{ requested }}</div>
+{% endif %}
+
+<a class="back" href="/">← Back to Home</a>
+{% endblock %}

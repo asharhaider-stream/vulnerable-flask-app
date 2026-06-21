@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Report - Punjab Police</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Generate Suspect Report</h1>
+        <p>VULNERABLE: Command Injection</p>
+        
+        <form method="GET" action="/generate-report">
+            <label>Suspect ID:</label>
+            <input type="text" name="id" placeholder="Enter suspect ID">
+            <button type="submit">Generate</button>
+        </form>
+        
+        {% if output %}
+            <div class="output">
+                <h3>Report Output:</h3>
+                <pre>{{ output }}</pre>
+            </div>
+        {% endif %}
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <p><strong>⚠️ Test:</strong> Try entering <code>1; ls</code> or <code>1; whoami</code></p>
+    </div>
+</body>
+</html>

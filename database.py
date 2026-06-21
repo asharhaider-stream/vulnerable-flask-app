@@ -1,10 +1,12 @@
-
 import sqlite3
 
 def init_db():
     conn = sqlite3.connect("police.db")
     cursor = conn.cursor()
     
+    # ============================================
+    # TABLE 1: suspects (Your original table)
+    # ============================================
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS suspects (
             id INTEGER PRIMARY KEY,
@@ -15,6 +17,35 @@ def init_db():
         )
     """)
     
+    # ============================================
+    # TABLE 2: wanted (For Blind SQL Injection)
+    # ============================================
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS wanted (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            cnic TEXT,
+            crime TEXT,
+            status TEXT DEFAULT 'Wanted'
+        )
+    """)
+    
+    # ============================================
+    # TABLE 3: criminals (For Stored XSS + IDOR)
+    # ============================================
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS criminals (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            crime TEXT,
+            details TEXT,
+            added_date TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    
+    # ============================================
+    # SAMPLE DATA: suspects (Your original data)
+    # ============================================
     suspects = [
         (1, "Syed Ashar", "35202-1234567-1", "Breaching military database", "Wanted"),
         (2, "Bilal Chaudhry", "35201-9876543-2", "20TB of CP", "Arrested"),
@@ -41,6 +72,92 @@ def init_db():
     cursor.executemany("""
         INSERT OR IGNORE INTO suspects VALUES (?,?,?,?,?)
     """, suspects)
-
+    
+    # ============================================
+    # SAMPLE DATA: wanted (For Blind SQL Injection)
+    # ============================================
+    wanted_suspects = [
+        ("Dawood Ibrahim", "35201-1111111-1", "Smuggling", "Wanted"),
+        ("Chhota Rajan", "35202-2222222-2", "Murder", "Wanted"),
+        ("Billa Ranga", "35301-3333333-3", "Armed Robbery", "Wanted"),
+        ("Veerappan", "35201-4444444-4", "Poaching", "Wanted"),
+    ]
+    
+    cursor.executemany("""
+        INSERT OR IGNORE INTO wanted (name, cnic, crime, status)
+        VALUES (?,?,?,?)
+    """, wanted_suspects)
+    
+    # ============================================
+    # SAMPLE DATA: criminals (For Stored XSS + IDOR)
+    # ============================================
+    criminals = [
+        ("Aamir Khan", "Cyber Fraud", "Mastermind behind bank phishing scams"),
+        ("Zara Ali", "Drug Trafficking", "Involved in cross-border smuggling operations"),
+        ("Imran Sheikh", "Extortion", "Targeted local businesses in Lahore"),
+    ]
+    
+    cursor.executemany("""
+        INSERT OR IGNORE INTO criminals (name, crime, details)
+        VALUES (?,?,?)
+    """, criminals)
+    
     conn.commit()
     conn.close()
+    print("✅ Database initialized successfully!")
+
+# ============================================
+# HELPER FUNCTIONS (For your app.py)
+# ============================================
+
+def get_suspect_by_cnic(cnic):
+    """Get a suspect by CNIC (used in /search)"""
+    conn = sqlite3.connect("police.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM suspects WHERE cnic = ?", (cnic,))
+    suspect = cursor.fetchone()
+    conn.close()
+    return suspect
+
+def get_wanted_by_name(name):
+    """Get wanted suspects by name (used in /wanted)"""
+    conn = sqlite3.connect("police.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM wanted WHERE name LIKE ?", (f"%{name}%",))
+    suspects = cursor.fetchall()
+    conn.close()
+    return suspects
+
+def add_criminal(name, crime, details):
+    """Add a new criminal (used in /add-suspect)"""
+    conn = sqlite3.connect("police.db")
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO criminals (name, crime, details) VALUES (?, ?, ?)",
+        (name, crime, details)
+    )
+    conn.commit()
+    conn.close()
+
+def get_criminal_by_id(id):
+    """Get a criminal by ID (used in /suspect-details)"""
+    conn = sqlite3.connect("police.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM criminals WHERE id = ?", (id,))
+    criminal = cursor.fetchone()
+    conn.close()
+    return criminal
+
+def delete_criminal(id):
+    """Delete a criminal by ID (used in /delete-suspect)"""
+    conn = sqlite3.connect("police.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM criminals WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+
+# ============================================
+# Run init when module is imported
+# ============================================
+if __name__ == "__main__":
+    init_db()

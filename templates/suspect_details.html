@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suspect Details - Punjab Police</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>👤 Suspect Details</h1>
+        <p>VULNERABLE: IDOR - No authorization check</p>
+        
+        {% if suspect %}
+            <div class="suspect-card">
+                <h2>{{ suspect.name | safe }}</h2>
+                <p><strong>CNIC:</strong> {{ suspect.cnic }}</p>
+                <p><strong>Crime:</strong> {{ suspect.crime | safe }}</p>
+                <p><strong>Status:</strong> <span class="badge">{{ suspect.status }}</span></p>
+            </div>
+            <p><strong>⚠️ Test:</strong> Try changing the ID in URL: <code>/suspect-details/1</code>, <code>/suspect-details/2</code>, etc.</p>
+        {% else %}
+            <p>Suspect not found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
